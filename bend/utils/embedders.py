@@ -219,6 +219,7 @@ class PythiaEmbedder(BaseEmbedder):
             for seq in tqdm(sequences, disable=disable_tqdm):
                 
                 input_ids = self.tokenizer(seq, return_tensors="pt", return_attention_mask=False, return_token_type_ids=False)["input_ids"]
+                model_input = input_ids
                 if model_input.shape[1] > 1024:
                     model_input = torch.split(model_input, 1024, dim=1)
                     output = []
