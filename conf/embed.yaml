@@ -33,7 +33,7 @@ task : gene_finding
 # model instatiators 
 pythia85:
   _target_ : bend.utils.embedders.PythiaEmbedder
-  model_name : DNA-LLM/virus-pythia-85M-1024-two_d
+  model_name : DNA-LLM/virus-denseformer-1.4M-1024-two_d
 dnabert2:
   _target_ : bend.utils.embedders.DNABert2Embedder
   model_name : zhihan1996/DNABERT-2-117M
