@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 import sys
 # load config 
-@hydra.main(config_path="../conf/embedding/", config_name="embed", version_base=None)
+@hydra.main(config_path="/kaggle/working/BEND/conf/embedding/", config_name="embed", version_base=None)
 def run_experiment(cfg: DictConfig) -> None:
     """
     Run a embedding of nucleotide sequences.
