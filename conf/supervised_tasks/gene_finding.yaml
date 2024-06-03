@@ -44,7 +44,7 @@ optimizer :
 data:
   _target_: bend.utils.data_downstream.get_data
   cross_validation : false
-  batch_size : 64
+  batch_size : 512
   num_workers : 0
   padding_value : -100
   shuffle : 1000
