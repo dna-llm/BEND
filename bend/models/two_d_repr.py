@@ -65,4 +65,4 @@ def generate_2d_sequence(seq):
 
     tensor_2d_rep_y = torch.Tensor(interpolated_coords).reshape(1,1000)
 
-    return y_train_scaled
+    return y_train_scaled.reshape(1, len(y_train_scaled))
