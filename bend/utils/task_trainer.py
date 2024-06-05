@@ -501,7 +501,7 @@ class BaseTrainer:
                 
                 targets_all.append(target.detach().cpu())  
 
-        loss /= (idx + 1) 
+        loss #/= (idx + 1) 
         # compute metrics
         # save targets and outputs 
         try:
