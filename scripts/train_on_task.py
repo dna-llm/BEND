@@ -73,6 +73,7 @@ def run_experiment(cfg: DictConfig) -> None:
 
     # init dataloaders 
     if 'supervised' in cfg.embedder : cfg.data.data_dir = cfg.data.data_dir.replace(cfg.embedder, 'onehot')
+    print(cfg.data)
     train_loader, val_loader, test_loader = hydra.utils.instantiate(cfg.data) # instantiate dataloaders
     # instantiate trainer
     trainer = BaseTrainer(model = model, optimizer = optimizer, criterion = criterion, 
