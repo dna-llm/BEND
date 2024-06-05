@@ -155,10 +155,10 @@ def embed_from_bed(bed, reference_fasta, embedder,
         sequence = fasta.fetch(chrom, start, end, strand = strand, flank = flank) # categorical labels
         # embed sequence
         sequence_embed = embedder(sequence, upsample_embeddings = upsample_embeddings)
-        if sequence_embed.shape[1] != len(sequence):
-            print(f'Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)} : {n} {chrom}:{start}-{end}{strand})')
-            print(n, chrom, start, end, strand)
-            continue
+        # if sequence_embed.shape[1] != len(sequence):
+        #     print(f'Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)} : {n} {chrom}:{start}-{end}{strand})')
+        #     print(n, chrom, start, end, strand)
+        #     continue
         sink.write({
             "__key__": f"sample_{n + start_offset}",
             "input.npy": sequence_embed,
