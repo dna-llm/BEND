@@ -1,5 +1,5 @@
 onehot: 5
-pythia85: 128
+pythia85: 1000
 resnet-supervised : 256
 basset-supervised : 5
 gpn: 512
