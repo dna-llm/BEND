@@ -456,7 +456,7 @@ class BaseTrainer:
         
         data, target = batch
         with torch.autocast(device_type='cuda', dtype=torch.float32):
-            output = self.model(x = data.to(self.device, non_blocking=True), length = target.shape[-1], 
+            output = self.model(x = data.to(self.device, non_blocking=True,dtype=torch.float32 ), length = target.shape[-1], 
                                 activation = self.config.params.activation) 
     
             loss = self.criterion(output, target.to(self.device, non_blocking=True).long())
@@ -492,7 +492,7 @@ class BaseTrainer:
         targets_all = []
         with torch.no_grad():
             for idx, (data, target) in enumerate(data_loader):
-                output = self.model(data.to(self.device), activation = self.config.params.activation)
+                output = self.model(data.to(self.device, dtype=torch.float32), activation = self.config.params.activation)
                 loss += self.criterion(output, target.to(self.device).long()).item()
 
                 if  self.config.params.criterion == 'bce': 
