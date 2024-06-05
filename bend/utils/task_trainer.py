@@ -15,6 +15,14 @@ import numpy as np
 import glob
 import pandas as pd
 
+
+def append_to_log(text):
+    log_file = 'test_1.txt'
+    
+    with open(log_file, 'a') as file:
+        file.write(text + '\n')
+
+
 class CrossEntropyLoss(nn.Module):
     """
     Cross entropy loss for classification tasks. Wrapper around `torch.nn.CrossEntropyLoss`
@@ -57,6 +65,7 @@ class CrossEntropyLoss(nn.Module):
         loss : torch.Tensor
             Cross entropy loss.
         """
+        append_to_log(target[0])
         print(target[0].unique(return_counts=True))
         
         return self.criterion(pred, target)
