@@ -58,7 +58,7 @@ class CrossEntropyLoss(nn.Module):
             Cross entropy loss.
         """
         print(pred.shape)
-        return self.criterion(pred.permute(0, 2, 1), target)
+        return self.criterion(pred, target)
 
 class PoissonLoss(nn.Module):
     """
