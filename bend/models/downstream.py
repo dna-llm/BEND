@@ -136,12 +136,12 @@ class CNN(nn.Module):
             self.upsample = UpsampleLayer(scale_factor = upsample_factor)
         
         self.conv1 = nn.Sequential(#TransposeLayer(), 
-                                   nn.Linear(input_size, hidden_size)#, kernel_size, stride = 1, padding = 1), 
+                                   nn.Linear(input_size, hidden_size),#, kernel_size, stride = 1, padding = 1), 
                                   # TransposeLayer(),
                                    nn.GELU())
         
         self.conv2 = nn.Sequential(#TransposeLayer(), 
-                                   nn.Linear(hidden_size, hidden_size)#, kernel_size, stride = 1, padding = 1), 
+                                   nn.Linear(hidden_size, hidden_size),#, kernel_size, stride = 1, padding = 1), 
                                #    TransposeLayer(), 
                                    nn.GELU()#,
                                   )
