@@ -135,21 +135,21 @@ class CNN(nn.Module):
         if upsample_factor: 
             self.upsample = UpsampleLayer(scale_factor = upsample_factor)
         
-        self.conv1 = nn.Sequential(TransposeLayer(), 
+        self.conv1 = nn.Sequential(#TransposeLayer(), 
                                    nn.Conv1d(input_size, hidden_size, kernel_size, stride = 1, padding = 1), 
-                                   TransposeLayer(),
+                                  # TransposeLayer(),
                                    nn.GELU())
         
-        self.conv2 = nn.Sequential(TransposeLayer(), 
+        self.conv2 = nn.Sequential(#TransposeLayer(), 
                                    nn.Conv1d(hidden_size, hidden_size, kernel_size, stride = 1, padding = 1), 
-                                   TransposeLayer(), 
+                               #    TransposeLayer(), 
                                    nn.GELU(),
                                   )
 
-        self.downsample = nn.Sequential(TransposeLayer(), 
+        self.downsample = nn.Sequential(#TransposeLayer(), 
                                         nn.AvgPool1d(kernel_size = output_downsample_window, 
                                                      stride = output_downsample_window), 
-                                        TransposeLayer(), 
+                                     #   TransposeLayer(), 
                                         ) if output_downsample_window is not None else None
         self.linear = nn.Sequential(nn.Linear(hidden_size, np.prod(output_size) if isinstance(output_size, tuple) else output_size))
         self.softmax =  nn.Softmax(dim = -1)
