@@ -21,7 +21,7 @@ def append_to_log(text):
     
     with open(log_file, 'a') as file:
         text = text.detach().cpu().numpy().astype('str') 
-        file.write(','.join(text.tolist()))
+        file.write('/n'+','.join(text.tolist()) + '/n')
 
 
 class CrossEntropyLoss(nn.Module):
