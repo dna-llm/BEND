@@ -65,4 +65,4 @@ def generate_2d_sequence(seq):
 
     tensor_2d_rep_y = torch.Tensor(interpolated_coords)
 
-    return example
+    return tensor_2d_rep_y
