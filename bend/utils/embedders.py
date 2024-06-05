@@ -27,6 +27,7 @@ from bend.models.dilated_cnn import ConvNetModel
 from bend.models.gena_lm import BertModel as GenaLMBertModel
 from bend.models.hyena_dna import HyenaDNAPreTrainedModel, CharacterTokenizer
 from bend.models.dnabert2 import BertModel as DNABert2BertModel
+from bend.models.two_d_repr import generate_2d_sequence
 from bend.utils.download import download_model, download_model_zenodo
 
 from tqdm.auto import tqdm
@@ -218,16 +219,17 @@ class PythiaEmbedder(BaseEmbedder):
         with torch.no_grad():
             for seq in tqdm(sequences, disable=disable_tqdm):
                 
-                input_ids = self.tokenizer(seq, return_tensors="pt", return_attention_mask=False, return_token_type_ids=False)["input_ids"]
-                model_input = input_ids
-                if model_input.shape[1] > 1024:
-                    model_input = torch.split(model_input, 1024, dim=1)
-                    output = []
-                    for chunk in model_input: 
-                        output.append(self.model(chunk.to(device))[0].detach().cpu())
-                    output = torch.cat(output, dim=1).numpy()
-                else:
-                    output = self.model(model_input.to(device))[0].detach().cpu().numpy()
+                # input_ids = self.tokenizer(seq, return_tensors="pt", return_attention_mask=False, return_token_type_ids=False)["input_ids"]
+                # model_input = input_ids
+                # if model_input.shape[1] > 1024:
+                #     model_input = torch.split(model_input, 1024, dim=1)
+                #     output = []
+                #     for chunk in model_input: 
+                #         output.append(self.model(chunk.to(device))[0].detach().cpu())
+                #     output = torch.cat(output, dim=1).numpy()
+                # else:
+                #     output = self.model(model_input.to(device))[0].detach().cpu().numpy()
+                output = generate_2d_sequence(seq)
                 embedding = output
                 embeddings.append(embedding)
 
