@@ -38,8 +38,8 @@ class CrossEntropyLoss(nn.Module):
         super(CrossEntropyLoss, self).__init__()
         self.ignore_index = ignore_index
         self.weight = weight
-        self.criterion = torch.nn.MultiLabelMarginLoss(ignore_index = self.ignore_index, 
-                                              weight=self.weight)
+        self.criterion = torch.nn.MultiLabelMarginLoss()#ignore_index = self.ignore_index, 
+                                              #weight=self.weight)
 
     def forward(self, pred, target):
         """
