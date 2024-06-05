@@ -131,7 +131,7 @@ class CNN(nn.Module):
         super(CNN, self).__init__()
         self.encoder = encoder 
         self.output_size = output_size
-        self.onehot_embedding = OneHotEmbedding(input_size)
+        self.onehot_embedding = torch.nn.Linear(input_size,input_size)
         if upsample_factor: 
             self.upsample = UpsampleLayer(scale_factor = upsample_factor)
         
