@@ -377,8 +377,8 @@ class BaseTrainer:
             #prof.step()
         
         #print(prof.key_averages().table(sort_by="self_cpu_time_total"))
-       # train_loss /= (idx +1)
-        train_loss 
+        train_loss /= (idx +1)
+      #  train_loss 
         
         
         return train_loss
@@ -501,7 +501,7 @@ class BaseTrainer:
                 
                 targets_all.append(target.detach().cpu())  
 
-        loss #/= (idx + 1) 
+        loss /= (idx + 1) 
         # compute metrics
         # save targets and outputs 
         try:
