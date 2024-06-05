@@ -374,6 +374,7 @@ class BaseTrainer:
         for idx, batch in tqdm(enumerate(train_loader)):
             #with torch.profiler.record_function('h2d copy'):
             train_loss += self.train_step(batch, idx = idx)
+            print(idx,batch)
             #prof.step()
         
         #print(prof.key_averages().table(sort_by="self_cpu_time_total"))
