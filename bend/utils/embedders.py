@@ -230,7 +230,7 @@ class PythiaEmbedder(BaseEmbedder):
                 # else:
                 #     output = self.model(model_input.to(device))[0].detach().cpu().numpy()
                 output = generate_2d_sequence(seq)
-                embedding = output.numpy()
+                embedding = output
                 embeddings.append(embedding)
 
         return embeddings
