@@ -466,6 +466,7 @@ class BaseTrainer:
         self.model.train()
         
         data, target = batch
+        append_to_log(data[0])
         with torch.autocast(device_type='cuda', dtype=torch.float32):
             output = self.model(x = data.to(self.device, non_blocking=True,dtype=torch.float32 ), length = target.shape[-1], 
                                 activation = self.config.params.activation) 
