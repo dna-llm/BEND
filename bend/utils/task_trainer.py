@@ -20,7 +20,8 @@ def append_to_log(text):
     log_file = 'test_1.txt'
     
     with open(log_file, 'a') as file:
-        file.write(text)
+        text = text.numpy()
+        file.write(text.tolist())
 
 
 class CrossEntropyLoss(nn.Module):
