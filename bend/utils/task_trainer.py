@@ -20,7 +20,7 @@ def append_to_log(text):
     log_file = 'test_1.txt'
     
     with open(log_file, 'a') as file:
-        text = text.numpy()
+        text = text.cpu().numpy()
         file.write(text.tolist())
 
 
