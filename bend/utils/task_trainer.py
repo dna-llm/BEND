@@ -21,6 +21,7 @@ def append_to_log(text):
     
     with open(log_file, 'a') as file:
         text = text.cpu().numpy()
+        print(text)
         file.write(','.join(text.tolist()))
 
 
