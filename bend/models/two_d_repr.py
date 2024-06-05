@@ -35,7 +35,7 @@ def _get_cumulative_coords(mapped_coords):
 
 
 def generate_2d_sequence(seq):
-    dna_sequence = seq
+    dna_sequence = seq.upper()
     mapped_coords = _dna_to_coordinates(dna_sequence, mapping_easy)
     cumulative_coords = _get_cumulative_coords(mapped_coords)
 
