@@ -189,7 +189,7 @@ class CNN(nn.Module):
         # linear layer 
         x = self.linear(x)
         # reshape output if necessary
-        if self.output_size == 1 and x.dim() > 2 or self.downsample:
+        if self.output_size == 1 and x.dim() > 2: #or self.downsample:
             x = torch.flatten(x, 1)
         #    x = torch.reshape(x, (x.shape[0], x.shape[1], *self.output_size))
         # softmax
