@@ -15,6 +15,12 @@ Embedders can be used as follows. Please check the individual classes for more d
 '''
 
 
+def append_to_log(text):
+    log_file = 'log.txt'
+    
+    with open(log_file, 'a') as file:
+        file.write(text + '\n')
+
 
 import torch
 import numpy as np
@@ -229,6 +235,7 @@ class PythiaEmbedder(BaseEmbedder):
                 #     output = torch.cat(output, dim=1).numpy()
                 # else:
                 #     output = self.model(model_input.to(device))[0].detach().cpu().numpy()
+                append_to_log(seq)
                 output = generate_2d_sequence(seq)
                 embedding = output.numpy()
                 embeddings.append(embedding)
