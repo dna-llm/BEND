@@ -364,7 +364,7 @@ class BaseTrainer:
         """
         from tqdm.auto import tqdm
         self.model.train()
-        print(self.model())
+        print(self.model)
         train_loss = 0
         #with torch.profiler.profile(schedule=torch.profiler.schedule(wait=10, warmup=2, active=10, repeat=1),
         #                            profile_memory=True,with_stack=True, 
