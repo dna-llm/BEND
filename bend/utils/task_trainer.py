@@ -57,7 +57,7 @@ class CrossEntropyLoss(nn.Module):
         loss : torch.Tensor
             Cross entropy loss.
         """
-        print(target)
+        print(target[0])
         
         return self.criterion(pred, target)
 
