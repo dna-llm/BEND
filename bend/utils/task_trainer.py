@@ -57,7 +57,7 @@ class CrossEntropyLoss(nn.Module):
         loss : torch.Tensor
             Cross entropy loss.
         """
-        
+        print(pred.shape)
         return self.criterion(pred.permute(0, 2, 1), target)
 
 class PoissonLoss(nn.Module):
