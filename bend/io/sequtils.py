@@ -20,7 +20,7 @@ def append_to_log_labels(text):
     log_file = 'labels.txt'
     with open(log_file, 'a') as file:
         text = text.astype('str') 
-        file.write(''.join(text.tolist()) + '\n')
+        file.write('[' +' '.join(text.tolist()) +']' + '\n')
 
 
 baseComplement = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
