@@ -12,16 +12,16 @@ import h5py
 
 def append_to_log_seq(text):
     log_file = 'seq.txt'
-    
     with open(log_file, 'a') as file:
         file.write(text + '\n')
 
 
 def append_to_log_labels(text):
     log_file = 'labels.txt'
-    
     with open(log_file, 'a') as file:
-        file.write(text + '\n')
+        text = text.astype('str') 
+        file.write('/n'+','.join(text.tolist()) + '/n')
+
 
 baseComplement = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
 
