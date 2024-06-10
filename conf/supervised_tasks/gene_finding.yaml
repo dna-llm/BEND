@@ -44,8 +44,7 @@ hydra :
                  virus_pythia_4.7M_1024_two_d,
                  virus_pythia_19M_1024_two_d,
                  virus_pythia_85M_1024_two_d
-task : gene_finding 
-embedder : onehot
+task : gene_finding embedder : onehot
 output_dir: ./downstream_tasks/${task}/${embedder}/
 model:
   _target_: bend.models.downstream.CNN
@@ -60,7 +59,7 @@ optimizer :
 data:
   _target_: bend.utils.data_downstream.get_data
   cross_validation : false
-  batch_size : 512
+  batch_size : 64
   num_workers : 0
   padding_value : -100
   shuffle : 1000
