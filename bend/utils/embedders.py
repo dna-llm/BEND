@@ -34,6 +34,7 @@ from bend.utils.download import download_model, download_model_zenodo
 from tqdm.auto import tqdm
 from transformers import logging, BertModel, BertConfig, BertTokenizer, AutoModel, AutoTokenizer, BigBirdModel, AutoModelForMaskedLM
 from sklearn.preprocessing import LabelEncoder
+from huggingface_hub import hf_hub_download, HfFileSystem
 logging.set_verbosity_error()
 
 
@@ -43,7 +44,27 @@ logging.set_verbosity_error()
 
 device =  torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+def find_last_checkpoint(repo_id: str) -> str:
+    """
+    Find the name of the last checkpoint directory in a HuggingFace Model repository.
 
+    Args:
+        repo_id (str): The repository ID on HuggingFace Hub.
+
+    Returns:
+        str: The path to the last checkpoint directory.
+    """
+    fs = HfFileSystem()
+    all_files = fs.ls(repo_id, detail = False)
+    checkpoint_dirs = [file for file in all_files if 'checkpoint-' in file]
+    if not checkpoint_dirs:
+        try:
+          return None
+        except:
+          raise FileNotFoundError(f"No checkpoints found in {repo_id}.")
+    # Sort checkpoint directories to get the last checkpoint
+    checkpoint_dirs.sort(key=lambda x: int(x.split('-')[-1]), reverse=True)
+    return checkpoint_dirs[0]
 ##
 ## GPN https://www.biorxiv.org/content/10.1101/2022.08.22.504706v1
 ##
@@ -167,7 +188,7 @@ class GPNEmbedder(BaseEmbedder):
 class PythiaEmbedder(BaseEmbedder):
     '''Embed using the GPN model https://www.biorxiv.org/content/10.1101/2022.08.22.504706v1'''
 
-    def load_model(self, model_name: str = "DNA-LLM/virus-pythia-85M-1024-two_d" ,subfolder = subfolder **kwargs):
+    def load_model(self, model_name: str = "DNA-LLM/virus-pythia-85M-1024-two_d" , **kwargs):
         """Load the Pythia model.
 
         Parameters
@@ -188,13 +209,15 @@ class PythiaEmbedder(BaseEmbedder):
         """
 
 
-        if subfolder:
+        try:
+            self.model = AutoModel.from_pretrained(model_name)
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+            
+        except:
+            subfolder = find_last_checkpoint(repo).split('/')[-1]
             self.model = AutoModel.from_pretrained(model_name, subfolder = subfolder)
             self.tokenizer = AutoTokenizer.from_pretrained(model_name,  subfolder = subfolder)
             
-        else:
-            self.model = AutoModel.from_pretrained(model_name)
-            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model.to(device)
         self.model.eval()
 
