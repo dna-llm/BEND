@@ -26,7 +26,7 @@ hydra :
                  awdlstm,
                  resnet-supervised,
                  nt_transformer_v2_500m,
-                 grover
+                 grover,
                  virus_pythia_1.2M_1024_compliment,
                  virus_pythia_1.2M_1024_headless,
                  virus_pythia_1.2M_1024_cross_entropy,
