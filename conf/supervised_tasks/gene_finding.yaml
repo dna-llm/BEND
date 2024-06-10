@@ -6,7 +6,7 @@ defaults:
   - _self_
 hydra :
   searchpath:
-    -  /kaggle/working/BEND/conf/
+    -  file://conf 
   sweeper:
     params:
       embedder : gena-lm-bigbird-base-t2t,
