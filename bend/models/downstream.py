@@ -131,26 +131,26 @@ class CNN(nn.Module):
         super(CNN, self).__init__()
         self.encoder = encoder 
         self.output_size = output_size
-        self.onehot_embedding = torch.nn.Linear(input_size, input_size)
+        self.onehot_embedding = OneHotEmbedding(input_size)
         if upsample_factor: 
             self.upsample = UpsampleLayer(scale_factor = upsample_factor)
         
-        self.conv1 = nn.Sequential(#TransposeLayer(), 
-                                   nn.Linear(input_size, hidden_size),#, kernel_size, stride = 1, padding = 1), 
-                                  # TransposeLayer(),
+        self.conv1 = nn.Sequential(TransposeLayer(), 
+                                   nn.Conv1d(input_size, hidden_size, kernel_size, stride = 1, padding = 1), 
+                                   TransposeLayer(),
                                    nn.GELU())
         
-        self.conv2 = nn.Sequential(#TransposeLayer(), 
-                                   nn.Linear(hidden_size, hidden_size),#, kernel_size, stride = 1, padding = 1), 
-                               #    TransposeLayer(), 
-                                   nn.GELU()#,
+        self.conv2 = nn.Sequential(TransposeLayer(), 
+                                   nn.Conv1d(hidden_size, hidden_size, kernel_size, stride = 1, padding = 1), 
+                                   TransposeLayer(), 
+                                   nn.GELU(),
                                   )
 
-        # self.downsample = nn.Sequential(#TransposeLayer(), 
-        #                                 nn.AvgPool1d(kernel_size = output_downsample_window, 
-        #                                              stride = output_downsample_window), 
-        #                              #   TransposeLayer(), 
-        #                                 ) if output_downsample_window is not None else None
+        self.downsample = nn.Sequential(TransposeLayer(), 
+                                        nn.AvgPool1d(kernel_size = output_downsample_window, 
+                                                     stride = output_downsample_window), 
+                                        TransposeLayer(), 
+                                        ) if output_downsample_window is not None else None
         self.linear = nn.Sequential(nn.Linear(hidden_size, np.prod(output_size) if isinstance(output_size, tuple) else output_size))
         self.softmax =  nn.Softmax(dim = -1)
         self.softplus = nn.Softplus()
@@ -184,12 +184,12 @@ class CNN(nn.Module):
         x = self.conv1(x)
         # 2nd conv layer 
         x = self.conv2(x)
-        # if self.downsample is not None:
-        #     x = self.downsample(x)
+        if self.downsample is not None:
+            x = self.downsample(x)
         # linear layer 
         x = self.linear(x)
         # reshape output if necessary
-        if self.output_size == 1 and x.dim() > 2: #or self.downsample:
+        if self.output_size == 1 and x.dim() > 2 or self.downsample:
             x = torch.flatten(x, 1)
         #    x = torch.reshape(x, (x.shape[0], x.shape[1], *self.output_size))
         # softmax
