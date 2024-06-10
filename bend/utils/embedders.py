@@ -15,11 +15,6 @@ Embedders can be used as follows. Please check the individual classes for more d
 '''
 
 
-def append_to_log(text):
-    log_file = 'log.txt'
-    
-    with open(log_file, 'a') as file:
-        file.write(text + '\n')
 
 
 import torch
@@ -193,10 +188,13 @@ class PythiaEmbedder(BaseEmbedder):
         """
 
 
-
-        self.model = AutoModel.from_pretrained(model_name)
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-
+        if subfolder:
+            self.model = AutoModel.from_pretrained(model_name, subfolder = subfolder)
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name,  subfolder = subfolder)
+            
+        else:
+            self.model = AutoModel.from_pretrained(model_name)
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model.to(device)
         self.model.eval()
 
@@ -225,21 +223,18 @@ class PythiaEmbedder(BaseEmbedder):
         with torch.no_grad():
             for seq in tqdm(sequences, disable=disable_tqdm):
                 
-                # input_ids = self.tokenizer(seq, return_tensors="pt", return_attention_mask=False, return_token_type_ids=False)["input_ids"]
-                # model_input = input_ids
-                # if model_input.shape[1] > 1024:
-                #     model_input = torch.split(model_input, 1024, dim=1)
-                #     output = []
-                #     for chunk in model_input: 
-                #         output.append(self.model(chunk.to(device))[0].detach().cpu())
-                #     output = torch.cat(output, dim=1).numpy()
-                # else:
-                #     output = self.model(model_input.to(device))[0].detach().cpu().numpy()
-                append_to_log(seq)
-                output = generate_2d_sequence(seq)
-                embedding = output.numpy()
+                input_ids = self.tokenizer(seq, return_tensors="pt", return_attention_mask=False, return_token_type_ids=False)["input_ids"]
+                model_input = input_ids
+                if model_input.shape[1] > 1024:
+                    model_input = torch.split(model_input, 1024, dim=1)
+                    output = []
+                    for chunk in model_input: 
+                        output.append(self.model(chunk.to(device)).last_hidden_state.detach().cpu())
+                    output = torch.cat(output, dim=1).numpy()
+                else:
+                    output = self.model(model_input.to(device)).last_hidden_state.detach().cpu().numpy()               
+                embedding = output
                 embeddings.append(embedding)
-
         return embeddings
 
 
