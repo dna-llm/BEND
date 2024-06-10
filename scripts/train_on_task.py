@@ -14,7 +14,7 @@ import sys
 os.environ["WDS_VERBOSE_CACHE"] = "1"
 
 # load config 
-@hydra.main(config_path=f"kaggle/working/BEND/conf/supervised_tasks/", config_name=None ,version_base=None) #
+@hydra.main(config_path=f"../conf/supervised_tasks/", config_name=None ,version_base=None) #
 def run_experiment(cfg: DictConfig) -> None:
     """
     Run a supervised task experiment.
