@@ -7,7 +7,7 @@ defaults:
 hydra:
  searchpath:
     -  /kaggle/working/BEND/conf
-  sweeper:
+ sweeper:
     params:
       embedder : gena-lm-bigbird-base-t2t,
                  gena-lm-bert-large-t2,
