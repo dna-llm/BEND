@@ -49,7 +49,7 @@ embedder : onehot
 output_dir: ./downstream_tasks/${task}/${embedder}/
 model:
   _target_: bend.models.downstream.CNN
-  input_size: ${datadims.${embedder}}
+  input_size: 128
   output_size: ${datadims.${task}}
   hidden_size: 64
   kernel_size: 3
