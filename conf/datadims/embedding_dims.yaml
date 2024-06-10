@@ -1,5 +1,21 @@
 onehot: 5
-pythia85: 1000
+virus_pythia_1.2M_1024_compliment : 128
+virus_pythia_1.2M_1024_headless : 128
+virus_pythia_1.2M_1024_cross_entropy : 128
+virus_pythia_4.7M_1024_cross_entropy : 256
+virus_pythia_4.7M_1024_compliment : 256
+virus_pythia_4.7M_1024_headless : 256
+virus_pythia_19M_1024_compliment : 512
+virus_pythia_19M_1024_cross_entropy : 512
+virus_pythia_19M_1024_headless : 512
+virus_pythia_85M_1024_compliment : 768
+virus_pythia_85M_1024_cross_entropy : 768
+virus_pythia_85M_1024_headless : 768
+virus_pythia_302M_1024_compliment : 1024
+virus_pythia_1.2M_1024_two_d : 128
+virus_pythia_4.7M_1024_two_d : 256
+virus_pythia_19M_1024_two_d : 512
+virus_pythia_85M_1024_two_d : 768
 resnet-supervised : 256
 basset-supervised : 5
 gpn: 512
