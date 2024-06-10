@@ -15,15 +15,6 @@ import numpy as np
 import glob
 import pandas as pd
 
-
-def append_to_log(text):
-    log_file = 'test_1.txt'
-    
-    with open(log_file, 'a') as file:
-        text = text.detach().cpu().numpy().astype('str') 
-        file.write('/n'+','.join(text.tolist()) + '/n')
-
-
 class CrossEntropyLoss(nn.Module):
     """
     Cross entropy loss for classification tasks. Wrapper around `torch.nn.CrossEntropyLoss`
@@ -47,8 +38,8 @@ class CrossEntropyLoss(nn.Module):
         super(CrossEntropyLoss, self).__init__()
         self.ignore_index = ignore_index
         self.weight = weight
-        self.criterion = torch.nn.MultiLabelMarginLoss()#ignore_index = self.ignore_index, 
-                                              #weight=self.weight)
+        self.criterion = torch.nn.CrossEntropyLoss(ignore_index = self.ignore_index, 
+                                              weight=self.weight)
 
     def forward(self, pred, target):
         """
@@ -66,10 +57,8 @@ class CrossEntropyLoss(nn.Module):
         loss : torch.Tensor
             Cross entropy loss.
         """
-        append_to_log(target[0])
-        print(target[0].unique(return_counts=True))
         
-        return self.criterion(pred, target)
+        return self.criterion(pred.permute(0, 2, 1), target)
 
 class PoissonLoss(nn.Module):
     """
@@ -375,7 +364,7 @@ class BaseTrainer:
         """
         from tqdm.auto import tqdm
         self.model.train()
-        print(self.model)
+        
         train_loss = 0
         #with torch.profiler.profile(schedule=torch.profiler.schedule(wait=10, warmup=2, active=10, repeat=1),
         #                            profile_memory=True,with_stack=True, 
@@ -385,13 +374,10 @@ class BaseTrainer:
         for idx, batch in tqdm(enumerate(train_loader)):
             #with torch.profiler.record_function('h2d copy'):
             train_loss += self.train_step(batch, idx = idx)
-            print(idx,batch)
             #prof.step()
         
         #print(prof.key_averages().table(sort_by="self_cpu_time_total"))
         train_loss /= (idx +1)
-      #  train_loss 
-        
         
         return train_loss
     
@@ -466,9 +452,8 @@ class BaseTrainer:
         self.model.train()
         
         data, target = batch
-        append_to_log(data[0])
-        with torch.autocast(device_type='cuda', dtype=torch.float32):
-            output = self.model(x = data.to(self.device, non_blocking=True,dtype=torch.float32 ), length = target.shape[-1], 
+        with torch.autocast(device_type='cuda', dtype=torch.float16):
+            output = self.model(x = data.to(self.device, non_blocking=True), length = target.shape[-1], 
                                 activation = self.config.params.activation) 
     
             loss = self.criterion(output, target.to(self.device, non_blocking=True).long())
@@ -504,7 +489,7 @@ class BaseTrainer:
         targets_all = []
         with torch.no_grad():
             for idx, (data, target) in enumerate(data_loader):
-                output = self.model(data.to(self.device, dtype=torch.float32), activation = self.config.params.activation)
+                output = self.model(data.to(self.device), activation = self.config.params.activation)
                 loss += self.criterion(output, target.to(self.device).long()).item()
 
                 if  self.config.params.criterion == 'bce': 
