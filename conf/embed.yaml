@@ -13,8 +13,25 @@ hydra :
              onehot, 
              awdlstm,
              nt_transformer_v2_500m,
-             grover
-             pythia85
+             grover,
+             virus_pythia_1.2M_1024_compliment,
+             virus_pythia_1.2M_1024_headless,
+             virus_pythia_1.2M_1024_cross_entropy,
+             virus_pythia_4.7M_1024_cross_entropy,
+             virus_pythia_4.7M_1024_compliment,
+             virus_pythia_4.7M_1024_headless,
+             virus_pythia_19M_1024_compliment,
+             virus_pythia_19M_1024_cross_entropy,
+             virus_pythia_19M_1024_headless,
+             virus_pythia_85M_1024_compliment,
+             virus_pythia_85M_1024_cross_entropy,
+             virus_pythia_85M_1024_headless,
+             virus_pythia_302M_1024_compliment,
+             virus_pythia_1.2M_1024_two_d,
+             virus_pythia_4.7M_1024_two_d,
+             virus_pythia_19M_1024_two_d,
+             virus_pythia_85M_1024_two_d
+
       task: 
             gene_finding,
             enhancer_annotation,
@@ -31,9 +48,74 @@ splits : null
 model : nt_transformer_1000g
 task : gene_finding
 # model instatiators 
-pythia85:
+virus_pythia_1.2M_1024_compliment:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-1.2M-1024-compliment
+  subfolder : False
+virus_pythia_1.2M_1024_headless:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-1.2M-1024-headless
+  subfolder : False
+virus_pythia_1.2M_1024_cross_entropy:
   _target_ : bend.utils.embedders.PythiaEmbedder
   model_name : DNA-LLM/virus-pythia-1.2M-1024-cross_entropy
+  subfolder : False
+virus_pythia_4.7M_1024_cross_entropy:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-4.7M-1024-cross_entropy
+  subfolder : False
+virus_pythia_4.7M_1024_compliment:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-4.7M-1024-compliment
+  subfolder : checkpoint-15000
+virus_pythia_4.7M_1024_headless:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-4.7M-1024-headless
+  subfolder : checkpoint-7000
+virus_pythia_19M_1024_compliment:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-19M-1024-compliment
+  subfolder : False
+virus_pythia_19M_1024_cross_entropy:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-19M-1024-cross_entropy
+  subfolder : False
+virus_pythia_19M_1024_headless:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-19M-1024-headless
+  subfolder : False
+virus_pythia_85M_1024_compliment:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-85M-1024-compliment
+  subfolder : False
+virus_pythia_85M_1024_cross_entropy:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-85M-1024-cross_entropy
+  subfolder : False
+virus_pythia_85M_1024_headless:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-85M-1024-headless
+  subfolder : False
+virus_pythia_302M_1024_compliment:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-302M-1024-compliment
+  subfolder : False
+virus_pythia_1.2M_1024_two_d:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-1.2M-1024-two_d
+  subfolder : False
+virus_pythia_4.7M_1024_two_d:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-4.7M-1024-two_d
+  subfolder : False
+virus_pythia_19M_1024_two_d:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-19M-1024-two_d
+  subfolder : False
+virus_pythia_85M_1024_two_d:
+  _target_ : bend.utils.embedders.PythiaEmbedder
+  model_name : DNA-LLM/virus-pythia-85M-1024-two_d
+  subfolder : False
 dnabert2:
   _target_ : bend.utils.embedders.DNABert2Embedder
   model_name : zhihan1996/DNABERT-2-117M
