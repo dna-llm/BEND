@@ -10,19 +10,6 @@ import numpy as np
 import webdataset as wds
 import h5py
 
-def append_to_log_seq(text):
-    log_file = 'seq.txt'
-    with open(log_file, 'a') as file:
-        file.write(text + '\n')
-
-
-def append_to_log_labels(text):
-    log_file = 'labels.txt'
-    with open(log_file, 'a') as file:
-        text = text.astype('str') 
-        file.write('[' +' '.join(text.tolist()) +']' + '\n')
-
-
 baseComplement = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
 
 def multi_hot(labels, num_labels):
@@ -168,12 +155,10 @@ def embed_from_bed(bed, reference_fasta, embedder,
         sequence = fasta.fetch(chrom, start, end, strand = strand, flank = flank) # categorical labels
         # embed sequence
         sequence_embed = embedder(sequence, upsample_embeddings = upsample_embeddings)
-        # if sequence_embed.shape[1] != len(sequence):
-        #     print(f'Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)} : {n} {chrom}:{start}-{end}{strand})')
-        #     print(n, chrom, start, end, strand)
-        #     continue
-        append_to_log_labels(labels)
-        append_to_log_seq(sequence)
+        if sequence_embed.shape[1] != len(sequence):
+            print(f'Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)} : {n} {chrom}:{start}-{end}{strand})')
+            print(n, chrom, start, end, strand)
+            continue
         sink.write({
             "__key__": f"sample_{n + start_offset}",
             "input.npy": sequence_embed,
