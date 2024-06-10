@@ -167,7 +167,7 @@ class GPNEmbedder(BaseEmbedder):
 class PythiaEmbedder(BaseEmbedder):
     '''Embed using the GPN model https://www.biorxiv.org/content/10.1101/2022.08.22.504706v1'''
 
-    def load_model(self, model_name: str = "DNA-LLM/virus-pythia-85M-1024-two_d" , **kwargs):
+    def load_model(self, model_name: str = "DNA-LLM/virus-pythia-85M-1024-two_d" ,subfolder = subfolder **kwargs):
         """Load the Pythia model.
 
         Parameters
