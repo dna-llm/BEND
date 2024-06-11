@@ -1,51 +1,51 @@
 defaults:
-  - datadims : [label_dims,embedding_dims, downstream_downsample]
-  - supervised_encoder : [resnet-supervised, basset-supervised]
-  - hydra : multirun 
+  - datadims: [label_dims, embedding_dims, downstream_downsample]
+  - supervised_encoder: [resnet-supervised, basset-supervised]
+  - hydra: multirun
   - override hydra/launcher: joblib # ability to launch jobs in parallel fashion
   - _self_
 hydra:
- searchpath:
-    -  /kaggle/working/BEND/conf
- sweeper:
+  searchpath:
+    - ../BEND/conf #/kaggle/working/BEND/conf
+  sweeper:
     params:
-      embedder : gena-lm-bigbird-base-t2t,
-                 gena-lm-bert-large-t2,
-                 hyenadna-tiny-1k,
-                 hyenadna-small-32k,
-                 hyenadna-medium-160k,
-                 hyenadna-medium-450k,
-                 hyenadna-large-1m,
-                 dnabert6,
-                 resnetlm,
-                 nt_transformer_ms,
-                 nt_transformer_human_ref,
-                 nt_transformer_1000g,
-                 dnabert2,
-                 onehot,
-                 awdlstm,
-                 resnet-supervised,
-                 nt_transformer_v2_500m,
-                 grover,
-                 virus_pythia_1.2M_1024_compliment,
-                 virus_pythia_1.2M_1024_headless,
-                 virus_pythia_1.2M_1024_cross_entropy,
-                 virus_pythia_4.7M_1024_cross_entropy,
-                 virus_pythia_4.7M_1024_compliment,
-                 virus_pythia_4.7M_1024_headless,
-                 virus_pythia_19M_1024_compliment,
-                 virus_pythia_19M_1024_cross_entropy,
-                 virus_pythia_19M_1024_headless,
-                 virus_pythia_85M_1024_compliment,
-                 virus_pythia_85M_1024_cross_entropy,
-                 virus_pythia_85M_1024_headless,
-                 virus_pythia_302M_1024_compliment,
-                 virus_pythia_1.2M_1024_two_d,
-                 virus_pythia_4.7M_1024_two_d,
-                 virus_pythia_19M_1024_two_d,
-                 virus_pythia_85M_1024_two_d
-task : gene_finding 
-embedder : onehot
+      embedder: gena-lm-bigbird-base-t2t,
+        gena-lm-bert-large-t2,
+        hyenadna-tiny-1k,
+        hyenadna-small-32k,
+        hyenadna-medium-160k,
+        hyenadna-medium-450k,
+        hyenadna-large-1m,
+        dnabert6,
+        resnetlm,
+        nt_transformer_ms,
+        nt_transformer_human_ref,
+        nt_transformer_1000g,
+        dnabert2,
+        onehot,
+        awdlstm,
+        resnet-supervised,
+        nt_transformer_v2_500m,
+        grover,
+        virus_pythia_1.2M_1024_compliment,
+        virus_pythia_1.2M_1024_headless,
+        virus_pythia_1.2M_1024_cross_entropy,
+        virus_pythia_4.7M_1024_cross_entropy,
+        virus_pythia_4.7M_1024_compliment,
+        virus_pythia_4.7M_1024_headless,
+        virus_pythia_19M_1024_compliment,
+        virus_pythia_19M_1024_cross_entropy,
+        virus_pythia_19M_1024_headless,
+        virus_pythia_85M_1024_compliment,
+        virus_pythia_85M_1024_cross_entropy,
+        virus_pythia_85M_1024_headless,
+        virus_pythia_302M_1024_compliment,
+        virus_pythia_1.2M_1024_two_d,
+        virus_pythia_4.7M_1024_two_d,
+        virus_pythia_19M_1024_two_d,
+        virus_pythia_85M_1024_two_d
+task: gene_finding
+embedder: onehot
 output_dir: ./downstream_tasks/${task}/${embedder}/
 model:
   _target_: bend.models.downstream.CNN
@@ -53,19 +53,19 @@ model:
   output_size: ${datadims.${task}}
   hidden_size: 64
   kernel_size: 3
-optimizer : 
-  _target_ : torch.optim.AdamW 
-  lr : 0.003
+optimizer:
+  _target_: torch.optim.AdamW
+  lr: 0.003
   weight_decay: 0.01
 data:
   _target_: bend.utils.data_downstream.get_data
-  cross_validation : false
-  batch_size : 256
-  num_workers : 0
-  padding_value : -100
-  shuffle : 1000
-  parent_dir : ./data
-  data_dir : ${data.parent_dir}/${task}/${embedder}/
+  cross_validation: false
+  batch_size: 256
+  num_workers: 0
+  padding_value: -100
+  shuffle: 1000
+  parent_dir: ./data
+  data_dir: ${data.parent_dir}/${task}/${embedder}/
 params:
   epochs: 100
   load_checkpoint: false
@@ -73,7 +73,7 @@ params:
   gradient_accumulation_steps: 1
   criterion: cross_entropy
   class_weights: null #[6.37, 1485.62, 1.52, 1485.62, 6.11, 1438.04, 1.52, 1438.04, 1.0]
-  metric : mcc
-  activation : none
+  metric: mcc
+  activation: none
 wandb:
-  mode : disabled 
+  mode: disabled

@@ -5,7 +5,7 @@ import pandas as pd
 from bend.io import sequtils
 from omegaconf import DictConfig
 
-CONFIG_PATH = "./conf/"  # "/kaggle/working/BEND/conf/"
+CONFIG_PATH = "../conf/"  # "/kaggle/working/BEND/conf/"
 
 
 # load config
