@@ -75,7 +75,7 @@ def run_experiment_hf(cfg: DictConfig) -> None:
         os.makedirs(output_dir, exist_ok=True)
 
 
-        sequtils.embed_from_bed_hf(**cfg[cfg.task], embedder = embedder, 
+        sequtils.embed_from_hf(**cfg[cfg.task], embedder = embedder, 
                                         output_path = f'{output_dir}/{split}.tar.gz',
                                         split = split,   
                                         upsample_embeddings = cfg[cfg.model]['upsample_embeddings'] if 'upsample_embeddings' in cfg[cfg.model] else False)
@@ -87,4 +87,4 @@ if __name__ == '__main__':
     
     print('Run Embedding')
     
-    run_experiment()
+    run_experiment_hf()
