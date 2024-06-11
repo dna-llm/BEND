@@ -11,3 +11,7 @@ torchvision
 hydra-joblib-launcher
 webdataset
 beautifulsoup4
+lxml
+datasets
+pysam
+h5py
