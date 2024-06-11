@@ -67,7 +67,7 @@ def run_experiment_hf(cfg: DictConfig) -> None:
     print('Embedding with', cfg.model) 
     # instatiante model
     embedder = hydra.utils.instantiate(cfg[cfg.model])
-    split= ['train']
+    splits= ['train']
     for split in splits:
         print(f'Embedding split: {split}')
         output_dir = f'{cfg.data_dir}/{cfg.task}/{cfg.model}/'
