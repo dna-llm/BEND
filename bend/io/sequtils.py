@@ -202,7 +202,7 @@ def embed_from_hf(
     upsample_embeddings=False,
     read_strand=False,
     label_column_idx=6,
-    label_depth=None,
+    label_depth=9,
     split=None,
     flank=0,
 ):
