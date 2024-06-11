@@ -15,6 +15,29 @@ from tqdm.auto import tqdm
 baseComplement = {"A": "T", "C": "G", "G": "C", "T": "A"}
 
 
+# def multi_hot(labels, num_labels):
+#     """
+#     Convert a numpy array to a one-hot encoded numpy array.
+
+#     Parameters
+#     ----------
+#     labels : list
+#         The labels that are true
+#     num_labels : int
+#         The number of potential labels.
+
+#     Returns
+#     -------
+#     numpy.ndarray
+#         A multi-hot encoded numpy array.
+#     """
+#     encoded = np.eye(num_labels, dtype=np.int64)[labels].sum(axis=0)
+
+#     # encoded = np.zeros((num_labels), dtype=np.int64)
+#     # for i, row in enumerate(labels):
+#     #    encoded[row] = 1
+#     return encoded
+
 def multi_hot(labels, num_labels):
     """
     Convert a numpy array to a one-hot encoded numpy array.
@@ -31,11 +54,8 @@ def multi_hot(labels, num_labels):
     numpy.ndarray
         A multi-hot encoded numpy array.
     """
-    encoded = np.eye(num_labels, dtype=np.int64)[labels].sum(axis=0)
-
-    # encoded = np.zeros((num_labels), dtype=np.int64)
-    # for i, row in enumerate(labels):
-    #    encoded[row] = 1
+    encoded = np.zeros(num_labels, dtype=np.int64)
+    encoded[labels] = 1
     return encoded
 
 
@@ -214,7 +234,8 @@ def embed_from_hf(
     for n, line in tqdm(df.iterrows(), total=len(df), desc="Embedding sequences"):
         sequence = line["seq"]
         sequence_embed = embedder(sequence, upsample_embeddings=upsample_embeddings)
-        labelss = multi_hot(line["labels"], label_depth)
+        labelss = [multi_hot(item, label_depth) for item in line['labels']]
+        labelss = np.array(labelss)
         if sequence_embed.shape[1] != len(line["seq"]):
             print(
                 f"Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)})"
