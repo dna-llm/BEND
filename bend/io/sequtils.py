@@ -184,8 +184,8 @@ def embed_from_hf(bed,repo_id, reference_fasta, embedder,
     sink = wds.TarWriter(output_path, compress=True)
     for n, line in tqdm(df.iterrows(), total=len(df), desc='Embedding sequences'):
         sequence_embed = embedder(line['seq'], upsample_embeddings = upsample_embeddings)
-        if sequence_embed.shape[1] != len(sequence):
-            print(f'Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)})')
+        if sequence_embed.shape[1] != len(line['seq']):
+            print(f'Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(line['seq'])})')
             continue
         sink.write({
             "__key__": f"sample_{n}",
