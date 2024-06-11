@@ -5,9 +5,11 @@ import pandas as pd
 from bend.io import sequtils
 from omegaconf import DictConfig
 
+CONFIG_PATH = "./conf/"  # "/kaggle/working/BEND/conf/"
+
 
 # load config
-@hydra.main(config_path="/kaggle/working/BEND/conf/", config_name="embed", version_base=None)
+@hydra.main(config_path=CONFIG_PATH, config_name="embed", version_base=None)
 def run_experiment(cfg: DictConfig) -> None:
     """
     Run a embedding of nucleotide sequences.
@@ -53,13 +55,11 @@ def run_experiment(cfg: DictConfig) -> None:
                 split=split,
                 chunk=chunk,
                 chunk_size=cfg.chunk_size,
-                upsample_embeddings=cfg[cfg.model]["upsample_embeddings"]
-                if "upsample_embeddings" in cfg[cfg.model]
-                else False,
+                upsample_embeddings=cfg[cfg.model].get("upsample_embeddings", False),
             )
 
 
-@hydra.main(config_path="/kaggle/working/BEND/conf/", config_name="embed", version_base=None)
+@hydra.main(config_path=CONFIG_PATH, config_name="embed", version_base=None)
 def run_experiment_hf(cfg: DictConfig) -> None:
     """
     Run a embedding of nucleotide sequences.
@@ -89,9 +89,7 @@ def run_experiment_hf(cfg: DictConfig) -> None:
             embedder=embedder,
             output_path=f"{output_dir}/{split}.tar.gz",
             split=split,
-            upsample_embeddings=cfg[cfg.model]["upsample_embeddings"]
-            if "upsample_embeddings" in cfg[cfg.model]
-            else False,
+            upsample_embeddings=cfg[cfg.model].get("upsample_embeddings", False),
         )
 
 
