@@ -214,6 +214,7 @@ def embed_from_hf(
     for n, line in tqdm(df.iterrows(), total=len(df), desc="Embedding sequences"):
         sequence = line["seq"]
         sequence_embed = embedder(sequence, upsample_embeddings=upsample_embeddings)
+        labelss = multi_hot(line["labels"], label_depth)
         if sequence_embed.shape[1] != len(line["seq"]):
             print(
                 f"Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)})"
@@ -222,7 +223,7 @@ def embed_from_hf(
         sink.write({
             "__key__": f"sample_{n}",
             "input.npy": sequence_embed,
-            "output.npy": np.array(line["labels"]),
+            "output.npy": labelss
         })
 
     sink.close()
