@@ -167,6 +167,31 @@ def embed_from_bed(bed, reference_fasta, embedder,
 
     sink.close()
 
+def embed_from_hf(repo_id, embedder, 
+                   output_path,
+                   hdf5_file= None,
+                   chunk_size = None, chunk: int = None, 
+                   upsample_embeddings = False,
+                    read_strand = False, label_column_idx=6, 
+                  label_depth=None, split = None, flank = 0):
+    ds = load_dataset(repo_id)
+    ds = ds[split]
+    df = pd.DataFrame(ds)
+
+
+    sink = wds.TarWriter(output_path, compress=True)
+    for n, line in tqdm(df.iterrows(), total=len(f), desc='Embedding sequences'):
+        sequence_embed = embedder(line['seq'], upsample_embeddings = upsample_embeddings)
+        if sequence_embed.shape[1] != len(sequence):
+            print(f'Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)})')
+            continue
+        sink.write({
+            "__key__": f"sample_{n}",
+            "input.npy": sequence_embed,
+            "output.npy": line['seq']
+        })
+
+    sink.close()
 
 
 
