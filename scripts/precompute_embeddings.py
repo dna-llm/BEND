@@ -50,6 +50,35 @@ def run_experiment(cfg: DictConfig) -> None:
                                         output_path = f'{output_dir}/{split}_{chunk}.tar.gz',
                                         split = split, chunk = chunk, chunk_size = cfg.chunk_size,   
                                         upsample_embeddings = cfg[cfg.model]['upsample_embeddings'] if 'upsample_embeddings' in cfg[cfg.model] else False)
+
+@hydra.main(config_path="/kaggle/working/BEND/conf/", config_name="embed", version_base=None)
+def run_experiment_hf(cfg: DictConfig) -> None:
+    """
+    Run a embedding of nucleotide sequences.
+    This function is called by hydra.
+    Parameters
+    ----------
+    cfg : DictConfig
+        Hydra configuration object.
+    """
+    print('Embedding data for', cfg.task)
+    # read the bed file and get the splits :  
+
+    print('Embedding with', cfg.model) 
+    # instatiante model
+    embedder = hydra.utils.instantiate(cfg[cfg.model])
+    split= ['train']
+    for split in splits:
+        print(f'Embedding split: {split}')
+        output_dir = f'{cfg.data_dir}/{cfg.task}/{cfg.model}/'
+        
+        os.makedirs(output_dir, exist_ok=True)
+
+
+        sequtils.embed_from_bed_hf(**cfg[cfg.task], embedder = embedder, 
+                                        output_path = f'{output_dir}/{split}.tar.gz',
+                                        split = split,   
+                                        upsample_embeddings = cfg[cfg.model]['upsample_embeddings'] if 'upsample_embeddings' in cfg[cfg.model] else False)
             
             
         
