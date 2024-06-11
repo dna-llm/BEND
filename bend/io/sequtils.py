@@ -222,7 +222,7 @@ def embed_from_hf(
         sink.write({
             "__key__": f"sample_{n}",
             "input.npy": sequence_embed,
-            "output.npy": line["labels"],
+            "output.npy": np.array(line["labels"]),
         })
 
     sink.close()
