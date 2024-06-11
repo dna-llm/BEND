@@ -169,8 +169,8 @@ def embed_from_bed(bed, reference_fasta, embedder,
 
     sink.close()
 
-def embed_from_hf(repo_id, embedder, 
-                   output_path,
+def embed_from_hf(bed, reference_fasta, embedder, 
+                    output_path,
                    hdf5_file= None,
                    chunk_size = None, chunk: int = None, 
                    upsample_embeddings = False,
