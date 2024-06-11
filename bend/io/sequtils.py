@@ -4,11 +4,13 @@ sequtils.py
 Utilities for processing genome coordinate-based sequence data to embeddings.
 """
 from tqdm.auto import tqdm
+from datasets import load_dataset
 import pysam
 import pandas as pd
 import numpy as np
 import webdataset as wds
 import h5py
+
 
 baseComplement = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
 
