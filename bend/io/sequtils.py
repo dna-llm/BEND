@@ -209,7 +209,7 @@ def embed_from_hf(
     ds = load_dataset(repo_id)
     ds = ds[split]
     df = pd.DataFrame(ds)
-
+    df = df.iloc[:10].copy()
     sink = wds.TarWriter(output_path, compress=True)
     for n, line in tqdm(df.iterrows(), total=len(df), desc="Embedding sequences"):
         sequence = line["seq"]
