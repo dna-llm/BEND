@@ -68,6 +68,7 @@ def run_experiment_hf(cfg: DictConfig) -> None:
     # instatiante model
     embedder = hydra.utils.instantiate(cfg[cfg.model])
     splits= ['train']
+    repo_id = 'DNA-LLM/gene_finding_benchmark_v1'
     for split in splits:
         print(f'Embedding split: {split}')
         output_dir = f'{cfg.data_dir}/{cfg.task}/{cfg.model}/'
@@ -75,7 +76,7 @@ def run_experiment_hf(cfg: DictConfig) -> None:
         os.makedirs(output_dir, exist_ok=True)
 
 
-        sequtils.embed_from_hf(**cfg[cfg.task], embedder = embedder, 
+        sequtils.embed_from_hf(**cfg[cfg.task],repo_id=repo_id, embedder = embedder, 
                                         output_path = f'{output_dir}/{split}.tar.gz',
                                         split = split,   
                                         upsample_embeddings = cfg[cfg.model]['upsample_embeddings'] if 'upsample_embeddings' in cfg[cfg.model] else False)
