@@ -30,9 +30,9 @@ def multi_hot(labels, num_labels):
     numpy.ndarray
         A multi-hot encoded numpy array.
     """
-    # encoded = np.zeros(num_labels, dtype=np.int64)
-    # encoded[labels] = 1
-    encoded = int(labels)
+    encoded = np.zeros(num_labels, dtype=np.int64)
+    encoded[labels] = 1
+    # encoded = int(labels)
     return encoded
 
 def reverse_complement(dna_string: str):
