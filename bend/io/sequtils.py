@@ -193,7 +193,7 @@ def embed_from_hf(
         sequence = line["seq"]
         sequence_embed = embedder(sequence, upsample_embeddings=upsample_embeddings)
         labelss = [multi_hot(item, label_depth) for item in line['labels']]
-        labelss = np.array(labelss)
+        labelss = np.array(labelss).reshape(10, 10767, 9)
         print(labelss.shape)
         labelss = np.argmax(labelss, axis =2)
         print(labelss.shape)
