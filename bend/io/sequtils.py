@@ -32,7 +32,7 @@ def multi_hot(labels, num_labels):
     """
     # encoded = np.zeros(num_labels, dtype=np.int64)
     # encoded[labels] = 1
-    encoded = np.int_(labels)
+    encoded = int(labels)
     return encoded
 
 def reverse_complement(dna_string: str):
