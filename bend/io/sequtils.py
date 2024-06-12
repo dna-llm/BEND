@@ -30,11 +30,8 @@ def multi_hot(labels, num_labels):
     numpy.ndarray
         A multi-hot encoded numpy array.
     """
-    encoded = np.eye(num_labels, dtype=np.int64)[labels].sum(axis=0)
-
-    #encoded = np.zeros((num_labels), dtype=np.int64)
-    #for i, row in enumerate(labels):
-    #    encoded[row] = 1
+    encoded = np.zeros(num_labels, dtype=np.int64)
+    encoded[labels] = 1
     return encoded
 
 def reverse_complement(dna_string: str):
@@ -169,29 +166,42 @@ def embed_from_bed(bed, reference_fasta, embedder,
 
     sink.close()
 
-def embed_from_hf(bed,repo_id, reference_fasta, embedder, 
-                    output_path,
-                   hdf5_file= None,
-                   chunk_size = None, chunk: int = None, 
-                   upsample_embeddings = False,
-                    read_strand = False, label_column_idx=6, 
-                  label_depth=None, split = None, flank = 0):
+
+def embed_from_hf(
+    bed,
+    repo_id,
+    reference_fasta,
+    embedder,
+    output_path,
+    hdf5_file=None,
+    chunk_size=None,
+    chunk: int = None,
+    upsample_embeddings=False,
+    read_strand=False,
+    label_column_idx=6,
+    label_depth=9,
+    split=None,
+    flank=0,
+):
     ds = load_dataset(repo_id)
     ds = ds[split]
     df = pd.DataFrame(ds)
-
-
+    df = df.iloc[:10].copy()
     sink = wds.TarWriter(output_path, compress=True)
-    for n, line in tqdm(df.iterrows(), total=len(df), desc='Embedding sequences'):
-        sequence = line['seq']
-        sequence_embed = embedder( sequence, upsample_embeddings = upsample_embeddings)
-        if sequence_embed.shape[1] != len(line['seq']):
-            print(f'Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)})')
+    for n, line in tqdm(df.iterrows(), total=len(df), desc="Embedding sequences"):
+        sequence = line["seq"]
+        sequence_embed = embedder(sequence, upsample_embeddings=upsample_embeddings)
+        labelss = [multi_hot(item, label_depth) for item in line['labels']]
+        labelss = np.array(labelss)
+        if sequence_embed.shape[1] != len(line["seq"]):
+            print(
+                f"Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)})"
+            )
             continue
         sink.write({
             "__key__": f"sample_{n}",
             "input.npy": sequence_embed,
-            "output.npy": line['seq']
+            "output.npy": labelss
         })
 
     sink.close()
