@@ -193,6 +193,7 @@ def embed_from_hf(
         sequence_embed = embedder(sequence, upsample_embeddings=upsample_embeddings)
         labelss = [multi_hot(item, label_depth) for item in line['labels']]
         labelss = np.array(labelss)
+        labelsls = np.array(line['labels'])
         if sequence_embed.shape[1] != len(line["seq"]):
             print(
                 f"Embedding length does not match sequence length ({sequence_embed.shape[1]} != {len(sequence)})"
@@ -201,7 +202,7 @@ def embed_from_hf(
         sink.write({
             "__key__": f"sample_{n}",
             "input.npy": sequence_embed,
-            "output.npy": np.array(line['labels'])
+            "output.npy": labelsls
         })
 
     sink.close()
